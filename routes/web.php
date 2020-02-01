@@ -20,7 +20,7 @@ Route::group(['prefix' => 'admin'], function() {
 });
 
 //課題３
-Route::get('new/create', 'XXX/AAAController@bbb');
+Route::get('XXX', 'XXX/AAAController@bbb');
 
 //課題4
 Route::group(['prefix' => 'admin'], function(){
