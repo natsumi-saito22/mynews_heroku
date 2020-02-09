@@ -13,14 +13,14 @@
                   
                   <div class="form-group row">
                       <label class="col-md-2">name</label>
-                      <div class="col-md-8">
+                      <div class="col-md-4">
                           <textarea class="form-control" name="body" rows="1" >{{ old('body') }}</textarea>
                       </div>
                   </div> 
                   
                   <div class="form-group row">
                       <label class="col-md-2">gender</label>
-                      <div class="col-md-8">
+                      <div class="col-md-4">
                           <textarea class="form-control" name="body" rows="1">{{ old('body') }}</textarea>
                       </div>
                   </div>
