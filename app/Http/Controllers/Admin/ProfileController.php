@@ -8,15 +8,19 @@ use App\Http\Controllers\Controller;
 class ProfileController extends Controller
 {
     //
+    public function index()
+    {
+        return view('admin.profile.index');
+    }
+   
     public function add()
     {
         return view('admin.profile.create');
     }
     
-    public function view()
+    public function create()
     {
-        return redirect('admin/profile/create');
-        
+        return view('admin.profile.create');
     }
     
     public function edit()
@@ -28,4 +32,5 @@ class ProfileController extends Controller
     {
         return redirect('admin/profile/edit');
     }
+    
 }
