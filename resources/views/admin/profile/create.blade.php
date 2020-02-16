@@ -1,4 +1,3 @@
-
 @extends('layouts.profile')
 
 @section ('title','Myプロフィール')
@@ -20,30 +19,31 @@
                   <div class="form-group row">
                       <label class="col-md-2">name</label>
                       <div class="col-md-4">
-                          <textarea class="form-control" name="body" rows="1" >{{ old('body') }}</textarea>
+                          <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                       </div>
                   </div> 
                   
                   <div class="form-group row">
                       <label class="col-md-2">gender</label>
                       <div class="col-md-4">
-                          <textarea class="form-control" name="body" rows="1">{{ old('body') }}</textarea>
+                          <input type="text" class="form-control" name="gender" value="{{ old('gender') }}">
                       </div>
                   </div>
 
                   <div class="form-group row">
                 　　　<label class="col-md-2">hobby</label>
                 　　　<div class="col-md-10">
-                　　　 <textarea class="form-control" name="body" rows="3">{{ old('body') }}</textarea>
+                　　　 <textarea class="form-control" name="hobby"rows="3">{{ old('hobby') }}</textarea>
                 　　　</div>
                   </div>
                   
                   <div class="form-group row">
-                      <label class="col-md-2">intoroduction</label>
+                      <label class="col-md-2">introduction</label>
                       <div class="col-md-10">
-                          <textarea class="form-control" name="body" rows="10">{{ old('body') }}</textarea>
+                          <textarea class="form-control" name="introduction" rows="10">{{ old('introduction') }}</textarea>
                       </div>
                   </div>
+                  {{ csrf_field() }}
                 <input type="submit" class="btn btn-primary" value="更新">
             </div>
         </div>

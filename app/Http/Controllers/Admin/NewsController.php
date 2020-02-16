@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\News;
+use App\History;
+use Carbon\Carbon;
 
 class NewsController extends Controller
 {
@@ -25,17 +27,18 @@ class NewsController extends Controller
       if ($form['image']) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
-      } else {
-          $news->image_path = null;
+        unset($news_form['image']);
+      } elseif(isset($request->remove)) {
+        $news->image_path = null;
+        unset($news_form['remove']);
       }
-
       unset($form['_token']);
-      unset($form['image']);
+      
       // データベースに保存する
       $news->fill($form);
       $news->save();
 
-      return redirect('admin/news/create');
+      return redirect('admin/news');
   }
 
   public function index(Request $request)
@@ -83,7 +86,12 @@ class NewsController extends Controller
       unset($news_form['_token']);
       // 該当するデータを上書きして保存する
       $news->fill($news_form)->save();
-
+      
+      $history = new History;
+      $history->news_id = $news->id;
+      $history->edited_at = Carbon::now();
+      $history->save();
+     
       return redirect('admin/news');
   }
   
@@ -91,6 +99,6 @@ class NewsController extends Controller
     $news= News::find($request->$id);
     
     $news->delete();
-    return redirect('admin/news');
+    return redirect('admin/news/');
   }
 }
