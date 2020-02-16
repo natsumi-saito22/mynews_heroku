@@ -1,5 +1,4 @@
 @extends('layouts.profile')
-
 @section('title', '登録済みプロフィールの一覧')
 
 @section('content')
@@ -16,7 +15,7 @@
                     <div class="form-group row">
                         <label class="col-md-2">タイトル</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="cond_title" value={{ $cond_title }}>
+                            <input type="text" class="form-control" name="cond_title" value="{{ $cond_title }}">
                         </div>
                         <div class="col-md-2">
                             {{ csrf_field() }}
@@ -27,7 +26,7 @@
             </div>   
         </div>
         <div class="row">
-            <div class="admin-profile col-md-12 mx-auto">
+            <div class="list-profile col-md-12 mx-auto">
                 <div class="row">
                     <table class="table table-dark">
                         <thead>
@@ -50,6 +49,9 @@
                                         <div>
                                             <a href="{{ action('Admin\ProfileController@edit', ['id' => $profile->id]) }}">編集</a>
                                         </div>
+                                        <div>
+                                            <a href="{{ action('Admin\ProfileController@delete', ['id' => $profile->id]) }}">削除</a>
+                                       </div>
                                     </td>
                                 </tr>
                             @endforeach

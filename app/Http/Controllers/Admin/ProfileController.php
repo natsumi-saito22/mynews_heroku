@@ -10,11 +10,15 @@ use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
-    //
     public function index(Request $request)
     {
-      $posts = Profile::all();
-      return view('admin.profile.index', ['posts' => $posts]);
+      $cond_title = $request->cond_title;
+      if ($cond_title != '') {
+          $posts = Profile::where('title', $cond_title)->get();
+      } else {
+          $posts = Profile::all();
+      }
+      return view('admin.profile.index', ['posts' => $posts, 'cond_title' => $cond_title]);
     }
    
     public function add()
@@ -61,12 +65,19 @@ class ProfileController extends Controller
       // 該当するデータを上書きして保存する
       $profile->fill($profile_form)->save();
       
-      $history2 = new History2;
-      $history2->profile_id = $profile->id;
-      $history2->edited_at = Carbon::now();
-      $history2->save();
+      $history = new History2;
+      $history->profile_id = $profile->id;
+      $history->edited_at = Carbon::now();
+      $history->save();
       
       return redirect('admin/profile');
     }
+    
+    public function delete(Request $request){
+    $profile= Profile::find($request->$id);
+    
+    $profile->delete();
+    return redirect('admin/profile/');
+  }
     
 }
