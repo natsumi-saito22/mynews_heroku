@@ -17,8 +17,7 @@ class NewsController extends Controller
    public function create(Request $request)
   {
 
-      // Varidationを行う
-      $this->validate($request, News::$rules);
+       $this->validate($request, News::$rules);
 
       $news = new News;
       $form = $request->all();
@@ -27,18 +26,17 @@ class NewsController extends Controller
       if ($form['image']) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
-        unset($news_form['image']);
-      } elseif(isset($request->remove)) {
-        $news->image_path = null;
-        unset($news_form['remove']);
+      } else {
+          $news->image_path = null;
       }
+
       unset($form['_token']);
-      
+      unset($form['image']);
       // データベースに保存する
       $news->fill($form);
       $news->save();
 
-      return redirect('admin/news');
+      return redirect('admin/news/create');
   }
 
   public function index(Request $request)
