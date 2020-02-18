@@ -4,6 +4,7 @@
 <div class="container">
         <div class="row">
             <h2>プロフィール一覧</h2>
+            <p>redeploy</p>
         </div>
         <div class="row">
             <div class="list-profile col-md-12 mx-auto">
