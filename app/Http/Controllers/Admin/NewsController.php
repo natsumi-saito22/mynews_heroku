@@ -1,11 +1,12 @@
 <?php
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\News;
 use App\History;
 use Carbon\Carbon;
+use Storage; 
 
 class NewsController extends Controller
 {
@@ -17,15 +18,14 @@ class NewsController extends Controller
    public function create(Request $request)
   {
 
-       $this->validate($request, News::$rules);
+      $this->validate($request, News::$rules);
 
       $news = new News;
       $form = $request->all();
 
-      // formに画像があれば、保存する
       if ($form['image']) {
-        $path = $request->file('image')->store('public/image');
-        $news->image_path = basename($path);
+        $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+        $news->image_path =Storage::disk('s3')->url($path);
       } else {
           $news->image_path = null;
       }
@@ -65,38 +65,30 @@ class NewsController extends Controller
 
   public function update(Request $request)
   {
-      // Validationをかける
       $this->validate($request, News::$rules);
-      
-      // News Modelからデータを取得する
       $news = News::find($request->id);
-      
-      // 送信されてきたフォームデータを格納する
       $news_form = $request->all();
       if (isset($news_form['image'])) {
-        $path = $request->file('image')->store('public/image');
-        $news->image_path = basename($path);
+        $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+        $news->image_path = Storage::disk('s3')->url($path);
         unset($news_form['image']);
       } elseif (isset($request->remove)) {
         $news->image_path = null;
         unset($news_form['remove']);
       }
       unset($news_form['_token']);
-      // 該当するデータを上書きして保存する
-      $news->fill($news_form)->save();
       
-      $history = new History;
-      $history->news_id = $news->id;
-      $history->edited_at = Carbon::now();
-      $history->save();
-     
+      $news->fill($news_form)->save();
+
       return redirect('admin/news');
   }
   
-  public function delete(Request $request){
-    $news= News::find($request->$id);
-    
-    $news->delete();
-    return redirect('admin/news/');
-  }
+  public function delete(Request $request)
+  {
+      $news = News::find($request->id);
+      $news->delete();
+      return redirect('admin/news/');
+  }  
+
+
 }
